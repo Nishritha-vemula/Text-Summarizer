@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: text-summarizer
+    env: python
+    buildCommand: ""
+    startCommand: gunicorn server:app
+    envVars:
+      - key: TRANSFORMERS_CACHE
+        value: /opt/render/project/.cache/huggingface

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Text Summarizer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body id="body">
+    <div class="container">
+        <div class="top-bar">
+            <h1>Text Summarizer</h1>
+            <button onclick="toggleDarkMode()" class="toggle-btn">🌙</button>
+        </div>
+        <form method="POST" onsubmit="showLoading()">
+            <textarea id="inputTextArea" name="input_text" placeholder="Enter text to summarize..." required oninput="autoResize(this)"></textarea>
+            <br>
+            <button type="submit" class="gradient-button">Summarize</button>
+        </form>
+
+        <div id="loading" style="display:none;">
+            <div class="spinner"></div>
+            <p>Summarizing... Please wait...</p>
+        </div>
+
+        {% if summary %}
+        <div class="result">
+            <h2>Summary:</h2>
+            <p id="summaryText">{{ summary }}</p>
+            <button onclick="copySummary()" class="copy-btn">📋 Copy</button>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+        }
+
+        function autoResize(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = textarea.scrollHeight + 'px';
+        }
+
+        function toggleDarkMode() {
+            document.getElementById('body').classList.toggle('dark-mode');
+        }
+
+        function copySummary() {
+            const summaryText = document.getElementById('summaryText').innerText;
+            navigator.clipboard.writeText(summaryText).then(function() {
+                alert('Summary copied to clipboard!');
+            }, function(err) {
+                alert('Failed to copy: ' + err);
+            });
+        }
+    </script>
+</body>
+</html>
